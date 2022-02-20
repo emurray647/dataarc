@@ -1,11 +1,13 @@
 #pragma once
 
+#include <cstring>
 #include <iostream>
 #include <sstream>
 #include <streambuf>
 #include <string>
 #include <ostream>
 #include <functional>
+#include <string>
 
 typedef std::function<void(std::string)> function_type;
 
@@ -55,7 +57,7 @@ public:
 
    CodeGenStream(); // : std::basic_stringstream<char>(this->std::basic_stringbuf<char>::str()) {}
 
-   inline std::basic_stringbuf<char>::_Mystr str() const {
+   inline std::basic_stringbuf<char>::__string_type str() const {
       return std::basic_stringbuf<char>::str();
       //return this->CodeGenBuf::str();
    }
@@ -71,9 +73,6 @@ public:
    CodeGenStream& operator <<(Type&& in) {
       return insert(in);
    }
-
-
-
 
    void Indent();
 
@@ -109,8 +108,9 @@ private:
       return *this;
    }
 
-   template <>
-   CodeGenStream& insert<std::string>(const std::string& in) {
+   // template <>
+   // CodeGenStream& insert<std::string>(const std::string& in) {
+   CodeGenStream& insert(const std::string& in) {
       for (const char& c : in) {
          //*(std::basic_ostream<char>*)this << c;
          insert(c);
@@ -119,8 +119,9 @@ private:
    }
 
 
-   template <>
-   CodeGenStream& insert<char>(const char& in) {
+   // template <>
+   // CodeGenStream& insert<char>(const char& in) {
+   CodeGenStream& insert(const char& in) {
       if (in == 0) {
          return *this;
       }
@@ -149,3 +150,5 @@ private:
    //}
 
 };
+
+

@@ -11,7 +11,14 @@ if(MSVC)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 endif(MSVC)
 
+
+
 # Include sub-projects.
 #add_subdirectory("src/CodeGen")
+add_subdirectory("3rdParty")
+
+
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+
 add_subdirectory("src/DataArcParser")
 add_subdirectory("src/DataArc")

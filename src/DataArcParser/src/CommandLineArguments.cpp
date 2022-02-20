@@ -1,5 +1,7 @@
 #include "CommandLineArguments.h"
 
+#include <cstring>
+
 const char* CommandLineArguments::INPUT_DIRECTORY_ARG = "--input";
 const char* CommandLineArguments::OUTPUT_CPP_DIRECTORY_ARG = "--output-cpp";
 

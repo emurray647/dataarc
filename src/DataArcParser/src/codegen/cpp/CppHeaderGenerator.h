@@ -30,6 +30,8 @@ private:
 
    static std::string GetStringFromType(const DataType& datatype);
 
+   static bool IsPrimitive(const DataType& datatype);
+
    CodeGenStream& _stream;
 
 };

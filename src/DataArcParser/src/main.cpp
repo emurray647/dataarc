@@ -8,6 +8,7 @@
 #include "parser/Parser.h"
 
 #include "codegen/cpp/CppGenerator.h"
+#include "codegen/CodeGenUtils.h"
 
 int main(int argc, char** argv) {
 
@@ -53,7 +54,20 @@ int main(int argc, char** argv) {
 		std::filesystem::create_directory(directory);
 		std::cout << "directory: " << directory.string() << std::endl;
 		std::cout << messageSets[0].GetFileName() << std::endl;
-		CppGenerator generator{ directory };
+		// TODO: create two file for .h and .cpp
+		// CppGenerator generator{ directory };
+		// generator.Generate(messageSets);
+
+		std::string filename = CodeGenUtils::RemoveSuffix(messageSets[0].GetFileName());
+
+		std::filesystem::path header_path = directory / CodeGenUtils::AddSuffix(filename, "h");
+		std::filesystem::create_directories(header_path.parent_path());
+		std::filesystem::path src_path = directory / CodeGenUtils::AddSuffix(filename, "cpp");
+		std::filesystem::create_directories(src_path.parent_path());
+		std::ofstream headerStrm(header_path);
+		std::ofstream srcStrm(src_path);
+
+		CppGenerator generator{headerStrm, srcStrm};
 		generator.Generate(messageSets);
 	}
 

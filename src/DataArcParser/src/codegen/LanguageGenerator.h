@@ -7,7 +7,8 @@ class LanguageGenerator {
 public:
 
    enum class Language {
-      CPP
+      CPP,
+      GO,
    };
 
    virtual ~LanguageGenerator() {}

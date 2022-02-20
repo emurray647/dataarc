@@ -1,5 +1,6 @@
 #include "Parser.h"
 
+#include <algorithm>
 #include <iostream>
 
 #include "ParseException.h"
@@ -74,6 +75,12 @@ void Parser::ParseImport() {
 
    if (CurrentToken().type == TokenType::STRING_LITERAL) {
       import.importFileName = CurrentToken().text;
+
+      // remove the quotation marks
+      import.importFileName.erase(
+         std::remove(import.importFileName.begin(), import.importFileName.end(), '\"'),
+         import.importFileName.end()
+      );
    }
 
    AdvanceToken();

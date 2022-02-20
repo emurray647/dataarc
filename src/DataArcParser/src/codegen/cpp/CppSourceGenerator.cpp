@@ -19,7 +19,7 @@ void CppSourceGenerator::Generate(const MessageSet& messageSet) {
 
    GenerateMethods(messageSet.GetMessages());
 
-   GenerateSerializationMethods(messageSet.GetMessages());
+   // GenerateSerializationMethods(messageSet.GetMessages());
 
    auto it = package.packageNames.rbegin();
    for (; it != package.packageNames.rend(); ++it) {
@@ -36,14 +36,26 @@ void CppSourceGenerator::GenerateMethods(const std::vector<Message>& messages) {
 
       for (const Field& field : message.fields) {
 
-         std::string typeString = CppCodeGenUtils::GetStringFromType(field.type);
-         _stream << typeString << "& " << message.name << "::get" << CppCodeGenUtils::FirstCharToUpper(field.name) << "() {\n";
+         std::string typeString;
+         if (CppCodeGenUtils::IsPrimitive(field.type)) {
+            typeString = CppCodeGenUtils::GetStringFromType(field.type);
+         }
+         else {
+            typeString = CppCodeGenUtils::GetStringFromType(field.type) + "&";
+         }
+         
+         _stream << typeString << " " << message.name << "::get" << CppCodeGenUtils::FirstCharToUpper(field.name) << "() {\n";
          _stream.Indent();
-         _stream << "return _" << field.name << "\n";
+         _stream << "return _" << field.name << ";\n";
          _stream.Unindent();
          _stream << "}\n";
 
-         _stream << "void " << message.name << "::set" << CppCodeGenUtils::FirstCharToUpper(field.name) << "(" << typeString << "& value" << ") {\n";
+         if (CppCodeGenUtils::IsPrimitive(field.type)) {
+            _stream << "void " << message.name << "::set" << CppCodeGenUtils::FirstCharToUpper(field.name) << "(" << typeString << " value" << ") {\n";
+         }
+         else {
+            _stream << "void " << message.name << "::set" << CppCodeGenUtils::FirstCharToUpper(field.name) << "(const " << typeString << " value" << ") {\n";
+         }
          _stream.Indent();
          _stream << "_" << field.name << " = value;\n";
          _stream.Unindent();

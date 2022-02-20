@@ -15,6 +15,10 @@ public:
 
    static std::string GetStringFromType(const DataType& datatype);
 
+   static bool IsPrimitive(const DataType& datatype);
+
+   static std::string AddSuffix(const std::string& base, const std::string& suffix);
+
    static std::string RemoveSuffix(const std::string & name);
 
    void GenerateMethodSignature(const std::string& type,
